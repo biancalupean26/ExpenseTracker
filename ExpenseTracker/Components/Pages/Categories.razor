@@ -1,0 +1,58 @@
+﻿@page "/categories"
+@using ExpenseTracker.Data
+
+<h3>Categories</h3>
+
+<ul>
+    @foreach (var category in categories)
+    {
+        <li>
+            @category.Id: @category.Name
+            <button @onclick="() => DeleteCategory(category)">Delete</button>
+        </li>
+    }
+</ul>
+
+<h3>Add New Category</h3>
+
+<form @onsubmit="HandleAddCategory">
+    <label>
+        Id:
+        <input type="number" @bind="newCategory.Id" required />
+    </label>
+    <br />
+    <label>
+        Name:
+        <input type="text" @bind="newCategory.Name" required />
+    </label>
+    <br />
+    <button type="submit">Add Category</button>
+</form>
+
+@code {
+    private List<Category> categories = new List<Category>
+    {
+        new Category { Id = 1, Name = "Food" },
+        new Category { Id = 2, Name = "House" },
+        new Category { Id = 3, Name = "Entertainment" }
+    };
+
+    private Category newCategory = new Category();
+
+    private void HandleAddCategory()
+    {
+        categories.Add(new Category { Id = newCategory.Id, Name = newCategory.Name });
+        newCategory = new Category(); // Resetează formularul
+    }
+
+    private void DeleteCategory(Category category)
+    {
+        categories.Remove(category);
+    }
+
+    public class Category
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+}
