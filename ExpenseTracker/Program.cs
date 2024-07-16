@@ -1,6 +1,8 @@
 using ExpenseTracker.Components;
 using ExpenseTracker.Data;
+using ExpenseTracker.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 
 
@@ -12,6 +14,8 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddScoped<CategoryService>();
+
 
 
 builder.Services.AddDbContext<ExpenseTrackerContext>(options =>
