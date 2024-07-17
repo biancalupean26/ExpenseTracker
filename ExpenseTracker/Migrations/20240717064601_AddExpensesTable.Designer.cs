@@ -3,6 +3,7 @@ using System;
 using ExpenseTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExpenseTracker.Migrations
 {
     [DbContext(typeof(ExpenseTrackerContext))]
-    partial class ExpenseTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20240717064601_AddExpensesTable")]
+    partial class AddExpensesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,7 +110,7 @@ namespace ExpenseTracker.Migrations
                             Id = 1,
                             Amount = 100.0m,
                             CategoryId = 1,
-                            Date = new DateTime(2024, 7, 17, 6, 57, 16, 710, DateTimeKind.Utc).AddTicks(2293),
+                            Date = new DateTime(2024, 7, 17, 6, 46, 1, 677, DateTimeKind.Utc).AddTicks(4301),
                             Planned = true,
                             Title = "Grocery Shopping"
                         },
@@ -116,7 +119,7 @@ namespace ExpenseTracker.Migrations
                             Id = 2,
                             Amount = 50.0m,
                             CategoryId = 2,
-                            Date = new DateTime(2024, 7, 17, 6, 57, 16, 710, DateTimeKind.Utc).AddTicks(2347),
+                            Date = new DateTime(2024, 7, 17, 6, 46, 1, 677, DateTimeKind.Utc).AddTicks(4306),
                             Planned = false,
                             Title = "Train Ticket"
                         },
@@ -125,7 +128,7 @@ namespace ExpenseTracker.Migrations
                             Id = 3,
                             Amount = 30.0m,
                             CategoryId = 3,
-                            Date = new DateTime(2024, 7, 17, 6, 57, 16, 710, DateTimeKind.Utc).AddTicks(2349),
+                            Date = new DateTime(2024, 7, 17, 6, 46, 1, 677, DateTimeKind.Utc).AddTicks(4307),
                             Planned = true,
                             Title = "Movie Night"
                         },
@@ -134,7 +137,7 @@ namespace ExpenseTracker.Migrations
                             Id = 4,
                             Amount = 200.0m,
                             CategoryId = 4,
-                            Date = new DateTime(2024, 7, 17, 6, 57, 16, 710, DateTimeKind.Utc).AddTicks(2351),
+                            Date = new DateTime(2024, 7, 17, 6, 46, 1, 677, DateTimeKind.Utc).AddTicks(4308),
                             Planned = true,
                             Title = "Online Course"
                         },
@@ -143,7 +146,7 @@ namespace ExpenseTracker.Migrations
                             Id = 5,
                             Amount = 150.0m,
                             CategoryId = 5,
-                            Date = new DateTime(2024, 7, 17, 6, 57, 16, 710, DateTimeKind.Utc).AddTicks(2352),
+                            Date = new DateTime(2024, 7, 17, 6, 46, 1, 677, DateTimeKind.Utc).AddTicks(4309),
                             Planned = false,
                             Title = "New Jacket"
                         },
@@ -152,74 +155,9 @@ namespace ExpenseTracker.Migrations
                             Id = 6,
                             Amount = 800.0m,
                             CategoryId = 6,
-                            Date = new DateTime(2024, 7, 17, 6, 57, 16, 710, DateTimeKind.Utc).AddTicks(2353),
+                            Date = new DateTime(2024, 7, 17, 6, 46, 1, 677, DateTimeKind.Utc).AddTicks(4310),
                             Planned = true,
                             Title = "Rent"
-                        });
-                });
-
-            modelBuilder.Entity("ExpenseTracker.Models.Income", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Incomes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Amount = 500.0m,
-                            Date = new DateTime(2024, 7, 17, 6, 57, 16, 710, DateTimeKind.Utc).AddTicks(2384),
-                            Title = "Freelance Gig",
-                            Type = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Amount = 1000.0m,
-                            Date = new DateTime(2024, 7, 17, 6, 57, 16, 710, DateTimeKind.Utc).AddTicks(2388),
-                            Title = "Scholarship Grant",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Amount = 200.0m,
-                            Date = new DateTime(2024, 7, 17, 6, 57, 16, 710, DateTimeKind.Utc).AddTicks(2390),
-                            Title = "Birthday Gift",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Amount = 10000.0m,
-                            Date = new DateTime(2024, 7, 17, 6, 57, 16, 710, DateTimeKind.Utc).AddTicks(2392),
-                            Title = "Lottery Prize",
-                            Type = 3
                         });
                 });
 
@@ -234,18 +172,9 @@ namespace ExpenseTracker.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("ExpenseTracker.Models.Income", b =>
-                {
-                    b.HasOne("ExpenseTracker.Data.Models.Category", null)
-                        .WithMany("Icomes")
-                        .HasForeignKey("CategoryId");
-                });
-
             modelBuilder.Entity("ExpenseTracker.Data.Models.Category", b =>
                 {
                     b.Navigation("Expenses");
-
-                    b.Navigation("Icomes");
                 });
 #pragma warning restore 612, 618
         }
