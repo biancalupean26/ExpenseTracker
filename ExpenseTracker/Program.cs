@@ -15,6 +15,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<ExpenseService>();
 
 
 
@@ -41,3 +42,4 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
+

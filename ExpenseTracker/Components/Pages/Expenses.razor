@@ -1,0 +1,95 @@
+﻿@page "/expenses"
+@inject ExpenseTracker.Services.ExpenseService ExpenseService
+@using ExpenseTracker.Data.Models
+@using System.Globalization
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<button @onclick="NavigateToAddExpense">
+    <NavLink class="nav-link" href="expenses/new">
+        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> NewExpense
+    </NavLink>
+</button>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+else if (expenses == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Titlu</th>
+                <th>Data</th>
+                <th>Suma</th>
+                <th>Planificat</th>
+                <th>Categorie</th>
+                <th>Acțiuni</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var expense in expenses)
+            {
+                <tr>
+                    <td>@expense.Title</td>
+                    <td>@expense.Date.ToString("d", CultureInfo.InvariantCulture)</td>
+                    <td>@expense.Amount.ToString("C", CultureInfo.InvariantCulture)</td>
+                    <td>@(expense.Planned ? "Da" : "Nu")</td>
+                    <td>@expense.Category?.Name</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">Edit</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => DeleteExpense(expense.Id)">Delete</button>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Expense> expenses;
+    private string errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadExpenses();
+    }
+
+    private async Task LoadExpenses()
+    {
+        try
+        {
+            expenses = await ExpenseService.GetExpensesAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"A apărut o eroare: {ex.Message}";
+        }
+    }
+
+    private void NavigateToAddExpense()
+    {
+        NavigationManager.NavigateTo("/expenses/new");
+    }
+
+    private async Task DeleteExpense(int id)
+    {
+        try
+        {
+            await ExpenseService.DeleteExpenseAsync(id);
+            expenses = (await ExpenseService.GetExpensesAsync()).ToList(); // Reîncarcă lista de cheltuieli
+            StateHasChanged(); // Asigură actualizarea UI-ului
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"A apărut o eroare la ștergerea cheltuielii: {ex.Message}";
+        }
+    }
+
+}

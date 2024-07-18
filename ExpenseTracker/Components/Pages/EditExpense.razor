@@ -1,0 +1,35 @@
+﻿@page "/expenses/{expenseId:int}"
+@inject ExpenseTracker.Services.ExpenseService ExpenseService
+@inject NavigationManager NavigationManager
+@using ExpenseTracker.Data.Models
+
+<h3>Edit Expense</h3>
+
+@if (expense != null && categories != null)
+{
+    <ExpenseForm Expense="expense" Categories="categories" OnValidSubmit="HandleValidSubmit" />
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    [Parameter]
+    public int expenseId { get; set; }
+
+    private Expense expense;
+    private IEnumerable<Category> categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        expense = await ExpenseService.GetExpenseByIdAsync(expenseId);
+        categories = await ExpenseService.GetCategoriesAsync();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await ExpenseService.UpdateExpenseAsync(expense);
+        NavigationManager.NavigateTo("/expenses");
+    }
+}
